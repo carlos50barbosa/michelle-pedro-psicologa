@@ -43,3 +43,6 @@ next-env.d.ts
 # TinaCMS (gerados no build)
 /tina/__generated__
 /public/admin
+
+# Painel (self-hosted)
+/painel/node_modules

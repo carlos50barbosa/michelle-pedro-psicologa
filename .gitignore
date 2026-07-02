@@ -46,3 +46,4 @@ next-env.d.ts
 
 # Painel (self-hosted)
 /painel/node_modules
+/painel/.auth.json

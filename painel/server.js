@@ -37,6 +37,9 @@ const SESSION_SECRET =
   process.env.PANEL_SESSION_SECRET || crypto.randomBytes(24).toString("hex");
 const IS_PROD = process.env.NODE_ENV === "production";
 const BASE = "/painel";
+// Onde a senha (em hash) é guardada quando trocada pelo painel.
+// Enquanto este arquivo não existe, vale a PANEL_PASSWORD do ambiente (inicial).
+const AUTH_FILE = process.env.PANEL_AUTH_FILE || path.join(__dirname, ".auth.json");
 
 if (IS_PROD && PASSWORD === "troque-esta-senha") {
   console.error("ERRO: defina PANEL_PASSWORD antes de rodar em produção.");
@@ -83,6 +86,34 @@ function safeEqual(a, b) {
   const ha = crypto.createHash("sha256").update(String(a)).digest();
   const hb = crypto.createHash("sha256").update(String(b)).digest();
   return crypto.timingSafeEqual(ha, hb);
+}
+
+// Senha guardada em hash (scrypt). Se não houver arquivo, usa a do ambiente.
+function hashPassword(password, salt) {
+  return crypto.scryptSync(String(password), salt, 32).toString("hex");
+}
+function loadCred() {
+  try {
+    const j = JSON.parse(fs.readFileSync(AUTH_FILE, "utf8"));
+    if (j && j.salt && j.hash) return j;
+  } catch {
+    /* sem arquivo ainda */
+  }
+  return null;
+}
+function verifyPassword(password) {
+  const cred = loadCred();
+  if (cred) {
+    const a = Buffer.from(hashPassword(password, cred.salt), "hex");
+    const b = Buffer.from(cred.hash, "hex");
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+  }
+  return safeEqual(password, PASSWORD); // inicial: senha do ambiente
+}
+function setPassword(newPassword) {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const hash = hashPassword(newPassword, salt);
+  fs.writeFileSync(AUTH_FILE, JSON.stringify({ salt, hash }) + "\n", { mode: 0o600 });
 }
 
 // Rate limit simples de login (por IP)
@@ -169,7 +200,7 @@ function layout(title, body) {
   main{max-width:820px;margin:24px auto;padding:0 16px}
   .card{background:#fff;border:1px solid #0000000f;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px #2e4a3a12}
   label{display:block;font-weight:600;margin:14px 0 6px;font-size:14px}
-  input[type=text],textarea{width:100%;padding:10px 12px;border:1px solid #00000022;border-radius:10px;font:inherit;background:#fff}
+  input[type=text],input[type=password],textarea{width:100%;padding:10px 12px;border:1px solid #00000022;border-radius:10px;font:inherit;background:#fff}
   textarea{min-height:90px;resize:vertical}
   .img-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
   .img-row img{width:96px;height:120px;object-fit:cover;border-radius:10px;border:1px solid #00000022;background:var(--bege)}
@@ -221,7 +252,7 @@ function editPage(content, msg) {
   const banner = msg ? (msg.ok ? `<div class="ok">${esc(msg.ok)}</div>` : `<div class="err">${esc(msg.err)}</div>`) : "";
   return layout(
     "Painel — Michelle Pedro",
-    `<header><b>Painel do site</b><a href="${BASE}/sair">Sair</a></header>
+    `<header><b>Painel do site</b><span style="display:flex;gap:16px"><a href="${BASE}/senha">Trocar senha</a><a href="${BASE}/sair">Sair</a></span></header>
      <main>
        ${banner}
        <form method="post" action="${BASE}/salvar" enctype="multipart/form-data">
@@ -248,6 +279,33 @@ function loginPage(error) {
          <div style="margin-top:16px"><button class="btn" type="submit">Entrar</button></div>
        </form>
      </div></main>`
+  );
+}
+
+function passwordPage(msg) {
+  const banner = msg
+    ? msg.ok
+      ? `<div class="ok">${esc(msg.ok)}</div>`
+      : `<div class="err">${esc(msg.err)}</div>`
+    : "";
+  return layout(
+    "Trocar senha — Painel",
+    `<header><b>Painel do site</b><a href="${BASE}">Voltar</a></header>
+     <main>
+       ${banner}
+       <div class="card">
+         <h2>Trocar senha</h2>
+         <form method="post" action="${BASE}/senha">
+           <label>Senha atual</label>
+           <input type="password" name="atual" autocomplete="current-password">
+           <label>Nova senha (mínimo 8 caracteres)</label>
+           <input type="password" name="nova" autocomplete="new-password">
+           <label>Repita a nova senha</label>
+           <input type="password" name="confirmar" autocomplete="new-password">
+           <div class="bar"><button class="btn" type="submit">Salvar nova senha</button></div>
+         </form>
+       </div>
+     </main>`
   );
 }
 
@@ -278,7 +336,7 @@ app.get(`${BASE}/login`, (req, res) => res.send(loginPage(null)));
 app.post(`${BASE}/login`, (req, res) => {
   const ip = req.ip || "?";
   if (loginBlocked(ip)) return res.status(429).send(loginPage("Muitas tentativas. Aguarde alguns minutos."));
-  if (safeEqual(req.body.senha || "", PASSWORD)) {
+  if (verifyPassword(req.body.senha || "")) {
     attempts.delete(ip);
     req.session.authed = true;
     return res.redirect(BASE);
@@ -288,6 +346,23 @@ app.post(`${BASE}/login`, (req, res) => {
 });
 
 app.get(`${BASE}/sair`, (req, res) => req.session.destroy(() => res.redirect(`${BASE}/login`)));
+
+app.get(`${BASE}/senha`, requireAuth, (req, res) => res.send(passwordPage(null)));
+
+app.post(`${BASE}/senha`, requireAuth, (req, res) => {
+  const atual = req.body.atual || "";
+  const nova = req.body.nova || "";
+  const confirmar = req.body.confirmar || "";
+  if (!verifyPassword(atual)) return res.status(401).send(passwordPage({ err: "Senha atual incorreta." }));
+  if (nova.length < 8) return res.status(400).send(passwordPage({ err: "A nova senha deve ter ao menos 8 caracteres." }));
+  if (nova !== confirmar) return res.status(400).send(passwordPage({ err: "A confirmação não confere." }));
+  try {
+    setPassword(nova);
+    return res.send(passwordPage({ ok: "Senha alterada com sucesso. Use a nova senha no próximo login." }));
+  } catch (e) {
+    return res.status(500).send(passwordPage({ err: "Falha ao salvar a senha: " + (e.message || e) }));
+  }
+});
 
 app.get(BASE, requireAuth, (req, res) => res.send(editPage(readContent(), null)));
 

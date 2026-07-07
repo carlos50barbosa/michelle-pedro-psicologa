@@ -28,7 +28,7 @@ export function WhatsAppFloat() {
     >
       <WhatsAppIcon className="h-7 w-7" />
       <span className="pointer-events-none absolute right-16 hidden whitespace-nowrap rounded-full bg-verde px-4 py-2 text-sm font-medium text-creme opacity-0 shadow-md transition-opacity duration-300 group-hover:opacity-100 lg:block">
-        Agende sua consulta
+        Vamos conversar
       </span>
     </a>
   );

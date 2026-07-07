@@ -59,7 +59,7 @@ export function ParaQuem() {
             </p>
             <LinkButton href={getWhatsAppUrl()} {...whatsappLinkProps} size="lg">
               <WhatsAppIcon className="h-5 w-5" />
-              Conversar pelo WhatsApp
+              Vamos conversar
             </LinkButton>
           </div>
         </Reveal>

@@ -6,8 +6,8 @@
   "cidade": "Cajamar/SP",
   "url": "https://www.michellepedro.com.br",
   "contato": {
-    "whatsappNumero": "(11) 99467-4718",
-    "whatsappInternacional": "5511994674718",
+    "whatsappNumero": "(11) 92585-6869",
+    "whatsappInternacional": "5511925856869",
     "whatsappMensagem": "Olá, Michelle! Vim pelo site e gostaria de agendar uma consulta.",
     "instagramUsuario": "@psic_mi",
     "instagramUrl": "https://www.instagram.com/psic_mi"
@@ -66,7 +66,7 @@
     "eyebrow": "Psicóloga · CRP 08/3678 · +20 anos de experiência",
     "headline": "Você não precisa enfrentar tudo sozinho.",
     "subtexto": "Psicoterapia online para adolescentes e adultos. Um espaço seguro e acolhedor para cuidar da sua ansiedade, autoestima e relacionamentos — no seu tempo, onde você estiver.",
-    "ctaPrimario": "Agendar minha consulta",
+    "ctaPrimario": "Vamos conversar",
     "ctaSecundario": "Conhecer meu trabalho",
     "selos": [
       {
@@ -90,7 +90,7 @@
     "paragrafos": [
       "Sou psicóloga há mais de 20 anos e apaixonada por acompanhar processos de transformação, autoconhecimento e desenvolvimento emocional.",
       "Ao longo dessa trajetória, tive o privilégio de acolher diferentes histórias, desafios e recomeços — sempre acreditando que ninguém precisa enfrentar tudo sozinho.",
-      "Meu trabalho é oferecer um espaço seguro, sem julgamentos, onde você possa se reconhecer, se fortalecer e construir uma vida com mais equilíbrio e bem-estar."
+      "Meu trabalho é te auxiliar a se reconhecer, se fortalecer e construir uma vida com mais equilíbrio e bem-estar, em um espaço seguro e sem julgamentos."
     ],
     "destaques": [
       {
@@ -98,11 +98,11 @@
         "texto": "Psicóloga há mais de 20 anos (CRP 08/3678)"
       },
       {
-        "icone": "Heart",
+        "icone": "GraduationCap",
         "texto": "Especialista em autoestima, amor próprio e superação da dependência emocional"
       },
       {
-        "icone": "GraduationCap",
+        "icone": "Heart",
         "texto": "Apaixonada por pessoas e por educação"
       }
     ],
@@ -220,19 +220,19 @@
   "depoimentos": {
     "ativo": true,
     "titulo": "O que dizem sobre o processo",
-    "subtitulo": "Relatos de quem viveu a experiência da terapia (exemplos ilustrativos).",
+    "subtitulo": "Relatos de quem vivenciou a terapia e autorizou a publicação",
     "itens": [
       {
         "texto": "As sessões me ajudaram a entender melhor o que eu sentia e a lidar com a ansiedade do dia a dia com mais leveza.",
-        "autor": "Depoimento ilustrativo"
+        "autor": "Paciente anônimo"
       },
       {
         "texto": "Encontrei um espaço seguro para falar sem medo de julgamento. Aos poucos, fui me reconhecendo e me valorizando mais.",
-        "autor": "Depoimento ilustrativo"
+        "autor": "Paciente anônimo"
       },
       {
         "texto": "A terapia online foi mais simples do que eu imaginava e me ajudou a olhar para os meus relacionamentos de outra forma.",
-        "autor": "Depoimento ilustrativo"
+        "autor": "Paciente anônimo"
       }
     ]
   },
@@ -269,7 +269,7 @@
   "ctaFinal": {
     "titulo": "Dê o primeiro passo hoje",
     "subtexto": "Você não precisa enfrentar tudo sozinho. Estou aqui para caminhar com você.",
-    "botao": "Agendar minha consulta no WhatsApp"
+    "botao": "Vamos conversar"
   },
   "rodape": {
     "atendimento": "Atendimento online para todo o Brasil",

@@ -58,7 +58,7 @@ export function Navbar() {
           ))}
           <LinkButton href={getWhatsAppUrl()} {...whatsappLinkProps} size="md">
             <WhatsAppIcon className="h-4 w-4" />
-            Agendar consulta
+            Vamos conversar
           </LinkButton>
         </nav>
 
@@ -101,7 +101,7 @@ export function Navbar() {
             onClick={() => setOpen(false)}
           >
             <WhatsAppIcon className="h-5 w-5" />
-            Agendar consulta
+            Vamos conversar
           </LinkButton>
         </nav>
       </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Mulish, Sacramento } from "next/font/google";
 import { site } from "@/content/site";
 import { CookieConsent } from "@/components/layout/CookieConsent";
+import { WhatsAppTracking } from "@/components/layout/WhatsAppTracking";
 import "./globals.css";
 
 /* ---------------------------------------------------------------------------
@@ -128,6 +129,7 @@ export default function RootLayout({
           estiverem preenchidos em `src/content/site.ts` (bloco `analytics`).
         */}
         <CookieConsent />
+        <WhatsAppTracking />
       </body>
     </html>
   );

@@ -50,3 +50,6 @@ next-env.d.ts
 
 # Peças de divulgação (marketing, geradas localmente)
 /divulgacao
+
+# PDFs da documentação (gerados a partir dos .md em docs/)
+/docs/*.pdf

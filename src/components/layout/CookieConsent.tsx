@@ -81,20 +81,20 @@ export function CookieConsent() {
             <p className="max-w-2xl text-sm leading-relaxed text-creme/90">
               {site.cookies.texto}
             </p>
-            <div className="flex shrink-0 gap-3">
-              <button
-                type="button"
-                onClick={() => choose("rejected")}
-                className="rounded-full border border-creme/30 px-5 py-2 text-sm font-semibold text-creme transition-colors hover:bg-creme/10"
-              >
-                {site.cookies.recusar}
-              </button>
+            <div className="flex shrink-0 items-center gap-5">
               <button
                 type="button"
                 onClick={() => choose("accepted")}
-                className="rounded-full bg-dourado px-5 py-2 text-sm font-semibold text-verde shadow-md transition-all hover:-translate-y-0.5 hover:bg-dourado-claro"
+                className="rounded-full bg-dourado px-7 py-2.5 text-sm font-bold text-verde shadow-md transition-all hover:-translate-y-0.5 hover:bg-dourado-claro"
               >
                 {site.cookies.aceitar}
+              </button>
+              <button
+                type="button"
+                onClick={() => choose("rejected")}
+                className="text-sm font-medium text-creme/70 underline decoration-creme/30 underline-offset-4 transition-colors hover:text-creme"
+              >
+                {site.cookies.recusar}
               </button>
             </div>
           </div>

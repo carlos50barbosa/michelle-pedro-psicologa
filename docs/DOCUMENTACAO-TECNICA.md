@@ -19,8 +19,8 @@ A edição de conteúdo pela cliente é feita por um **painel próprio, auto-hos
 | --- | --- |
 | Produção | https://www.michellepedro.com.br |
 | Painel de edição | https://michellepedro.com.br/painel |
-| Repositório | https://github.com/carlos50barbosa/michelle-pedro-psicologa (branch `main`) |
-| Servidor (VPS) | `82.25.77.26` — AlmaLinux 9, Node 20 (compartilhada com outros sites) |
+| Repositório | Git — branch `main` (URL mantida em local restrito) |
+| Servidor (VPS) | AlmaLinux 9, Node 20 (compartilhada; IP mantido em local restrito) |
 | SSL | Let's Encrypt (certbot), renovação automática |
 | Analytics | Google Analytics 4 (`G-HH5ERVL3M1`), atrás de consentimento (LGPD) |
 
@@ -75,7 +75,7 @@ npm run lint
 
 ## 5. Infraestrutura (VPS)
 
-- **SSH:** `ssh root@82.25.77.26` (chave já autorizada; era só-senha antes).
+- **SSH:** `ssh root@IP-DA-VPS` (acesso por chave; IP em local restrito).
 - **Nginx:** config do site em `/etc/nginx/conf.d/michellepedro.conf`
   (gerenciada em parte pelo certbot). Serve `/var/www/michellepedro` (o `out/`)
   e faz `proxy_pass` de `/painel` para `127.0.0.1:4000`.
@@ -83,7 +83,7 @@ npm run lint
 - **Projeto na VPS:** `/opt/michellepedro` (clone do repo, dono: usuário de
   serviço `painel`, sem shell de login).
 - **SELinux:** desativado nesta VPS.
-- Domínio no registrador aponta A `@` → `82.25.77.26` e CNAME `www` → raiz.
+- Domínio no registrador aponta A `@` → IP da VPS e CNAME `www` → raiz.
 
 ## 6. Deploy
 
@@ -198,6 +198,9 @@ journalctl -u michellepedro-painel -n 50
 - GitHub (branch `main`) — código e conteúdo.
 - Conta Google (GA4) da cliente — dados de analytics.
 - Senha do painel — com a cliente (trocável em `/painel/senha`).
+
+> 🔒 Os dados sensíveis (**IP da VPS, URL do repositório, tokens e senhas**) são
+> mantidos **em local restrito, fora deste documento**.
 
 ---
 

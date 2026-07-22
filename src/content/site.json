@@ -33,7 +33,8 @@
   },
   "analytics": {
     "ga4": "G-HH5ERVL3M1",
-    "metaPixel": "1712097073453701"
+    "metaPixel": "1712097073453701",
+    "gtm": "GTM-WJ23LZF2"
   },
   "cookies": {
     "texto": "Usamos cookies de análise e marketing (Google e Meta) para entender como o site é usado e melhorar a sua experiência. Tudo bem?",
